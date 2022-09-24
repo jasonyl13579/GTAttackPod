@@ -8,7 +8,24 @@ class CIFAR10Dataset:
         self.image_size = 32
         self.num_channels = 3
         self.num_classes = 10
-
+    def get_10_dataset(self):
+        (X_train, y_train), (X_test, y_test) = cifar10.load_data()
+        X, Y = [-1]*10, [-1]*10
+        
+        
+        X_test = X_test.reshape(X_test.shape[0], self.image_size, self.image_size, self.num_channels)
+        X_test = X_test.astype('float32')
+        X_test /= 255
+        Y_test = np_utils.to_categorical(y_test, self.num_classes)
+        
+        for i in range(0, 100):
+            if Y[y_test[i][0]] == -1:
+                X[y_test[i][0]] = X_test[i]
+                Y[y_test[i][0]] = Y_test[i][0]
+        del X_train, y_train
+          
+        return X, Y
+    
     def get_test_dataset(self):
         (X_train, y_train), (X_test, y_test) = cifar10.load_data()
 
